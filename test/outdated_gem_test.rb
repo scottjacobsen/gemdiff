@@ -145,6 +145,15 @@ module Gemdiff
         outdated_gem.expects(:open_url).with("http://github.com/x/x")
         outdated_gem.open
       end
+
+      it "outputs the url if no browser command is found" do
+        outdated_gem = OutdatedGem.new("x")
+        outdated_gem.stubs repo: "http://github.com/x/x"
+
+        Launchy.stubs(:open).raises(Launchy::CommandNotFoundError)
+        $stdout.expects(:puts).with("http://github.com/x/x")
+        outdated_gem.open
+      end
     end
   end
 end

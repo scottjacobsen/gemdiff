@@ -88,9 +88,11 @@ module Gemdiff
   private
 
     def open_url(url)
-      Launchy.open(url) do |exception|
-        $stderr.puts "Could not open #{url} because #{exception}"
-      end
+      Launchy.open(url)
+    rescue Launchy::CommandNotFoundError
+      $stdout.puts url
+    rescue => exception
+      $stderr.puts "Could not open #{url} because #{exception}"
     end
 
     def compare_part
